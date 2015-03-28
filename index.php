@@ -42,7 +42,7 @@ else if (array_key_exists('HTTP_X_HTTP_METHOD_OVERRIDE', $_SERVER) === true)
 	$_SERVER['REQUEST_METHOD'] = strtoupper(trim($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']));
 }
 
-ArrestDB::Serve('GET', '/(#any)/(#any)/(#any)', function ($table, $id, $data)
+function ServeGET3params ($table, $id, $data)
 {
 	$query = array
 	(
@@ -84,9 +84,10 @@ ArrestDB::Serve('GET', '/(#any)/(#any)/(#any)', function ($table, $id, $data)
 	}
 
 	return ArrestDB::Reply($result);
-});
+}
+ArrestDB::Serve('GET', '/(#any)/(#any)/(#any)', ServeGET3params);
 
-ArrestDB::Serve('GET', '/(#any)/(#num)?', function ($table, $id = null)
+function ServeGET2params ($table, $id = null)
 {
 	$query = array
 	(
@@ -140,9 +141,10 @@ ArrestDB::Serve('GET', '/(#any)/(#num)?', function ($table, $id = null)
 	}
 
 	return ArrestDB::Reply($result);
-});
+}
+ArrestDB::Serve('GET', '/(#any)/(#num)?', ServeGET2params);
 
-ArrestDB::Serve('DELETE', '/(#any)/(#num)', function ($table, $id)
+function ServeDELETE2params ($table, $id)
 {
 	$query = array
 	(
@@ -168,7 +170,8 @@ ArrestDB::Serve('DELETE', '/(#any)/(#num)', function ($table, $id)
 	}
 
 	return ArrestDB::Reply($result);
-});
+}
+ArrestDB::Serve('DELETE', '/(#any)/(#num)', ServeDELETE2params);
 
 if (in_array($http = strtoupper($_SERVER['REQUEST_METHOD']), array('POST', 'PUT')) === true)
 {
@@ -198,7 +201,7 @@ if (in_array($http = strtoupper($_SERVER['REQUEST_METHOD']), array('POST', 'PUT'
 	unset($data);
 }
 
-ArrestDB::Serve('POST', '/(#any)', function ($table)
+function ServePOST1param ($table)
 {
 	if (empty($_POST) === true)
 	{
@@ -270,9 +273,10 @@ ArrestDB::Serve('POST', '/(#any)', function ($table)
 	}
 
 	return ArrestDB::Reply($result);
-});
+}
+ArrestDB::Serve('POST', '/(#any)', ServePOST1param);
 
-ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
+function ServePUT2params  ($table, $id)
 {
 	if (empty($GLOBALS['_PUT']) === true)
 	{
@@ -308,7 +312,8 @@ ArrestDB::Serve('PUT', '/(#any)/(#num)', function ($table, $id)
 	}
 
 	return ArrestDB::Reply($result);
-});
+}
+ArrestDB::Serve('PUT', '/(#any)/(#num)', ServePUT2params);
 
 $result = ArrestDB::$BAD_REQUEST;
 
