@@ -382,7 +382,7 @@ class ArrestDB
 		{
 			if (isset($db, $query) === true)
 			{
-				if (strncasecmp($db->getAttribute(\PDO::ATTR_DRIVER_NAME), 'mysql', 5) === 0)
+				if (strncasecmp($db->getAttribute(PDO::ATTR_DRIVER_NAME), 'mysql', 5) === 0)
 				{
 					$query = strtr($query, '"', '`');
 				}
@@ -396,14 +396,14 @@ class ArrestDB
 
 				if (count($data, COUNT_RECURSIVE) > count($data))
 				{
-					$data = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($data)), false);
+					$data = iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($data)), false);
 				}
 
 				if ($result[$hash]->execute($data) === true)
 				{
 					$sequence = null;
 
-					if ((strncmp($db->getAttribute(\PDO::ATTR_DRIVER_NAME), 'pgsql', 5) === 0) && (sscanf($query, 'INSERT INTO %s', $sequence) > 0))
+					if ((strncmp($db->getAttribute(PDO::ATTR_DRIVER_NAME), 'pgsql', 5) === 0) && (sscanf($query, 'INSERT INTO %s', $sequence) > 0))
 					{
 						$sequence = sprintf('%s_id_seq', trim($sequence, '"'));
 					}
@@ -435,22 +435,22 @@ class ArrestDB
 			{
 				$options = array
 				(
-					\PDO::ATTR_CASE => \PDO::CASE_NATURAL,
-					\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-					\PDO::ATTR_EMULATE_PREPARES => false,
-					\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-					\PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
-					\PDO::ATTR_STRINGIFY_FETCHES => false,
+					PDO::ATTR_CASE => PDO::CASE_NATURAL,
+					PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+					PDO::ATTR_EMULATE_PREPARES => false,
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+					PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL,
+					PDO::ATTR_STRINGIFY_FETCHES => false,
 				);
 
 				if (preg_match('~^sqlite://([[:print:]]++)$~i', $query, $dsn) > 0)
 				{
 					$options += array
 					(
-						\PDO::ATTR_TIMEOUT => 3,
+						PDO::ATTR_TIMEOUT => 3,
 					);
 
-					$db = new \PDO(sprintf('sqlite:%s', $dsn[1]), null, null, $options);
+					$db = new PDO(sprintf('sqlite:%s', $dsn[1]), null, null, $options);
 					$pragmas = array
 					(
 						'automatic_index' => 'ON',
@@ -508,18 +508,18 @@ class ArrestDB
 					{
 						$options += array
 						(
-							\PDO::ATTR_AUTOCOMMIT => true,
-							\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8" COLLATE "utf8_general_ci", time_zone = "+00:00";',
-							\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+							PDO::ATTR_AUTOCOMMIT => true,
+							PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8" COLLATE "utf8_general_ci", time_zone = "+00:00";',
+							PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
 						);
 					}
 
-					$db = new \PDO(sprintf('%s:host=%s;port=%s;dbname=%s', $dsn[1], $dsn[4], $dsn[5], $dsn[6]), $dsn[2], $dsn[3], $options);
+					$db = new PDO(sprintf('%s:host=%s;port=%s;dbname=%s', $dsn[1], $dsn[4], $dsn[5], $dsn[6]), $dsn[2], $dsn[3], $options);
 				}
 			}
 		}
 
-		catch (\Exception $exception)
+		catch (Exception $exception)
 		{
 			return false;
 		}
