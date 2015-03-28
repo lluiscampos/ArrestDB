@@ -529,20 +529,7 @@ class ArrestDB
 
 	public static function Reply($data)
 	{
-		$bitmask = 0;
-		$options = array('UNESCAPED_SLASHES', 'UNESCAPED_UNICODE');
-
-		if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) === true)
-		{
-			$options[] = 'PRETTY_PRINT';
-		}
-
-		foreach ($options as $option)
-		{
-			$bitmask |= (defined('JSON_' . $option) === true) ? constant('JSON_' . $option) : 0;
-		}
-
-		if (($result = json_encode($data, $bitmask)) !== false)
+		if (($result = json_encode($data)) !== false)
 		{
 			$callback = null;
 
