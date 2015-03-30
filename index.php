@@ -408,7 +408,7 @@ class ArrestDB
 						$sequence = sprintf('%s_id_seq', trim($sequence, '"'));
 					}
 
-					switch (strstr($query, ' ', true))
+					switch (array_shift(explode(' ', $query)))
 					{
 						case 'INSERT':
 						case 'REPLACE':
